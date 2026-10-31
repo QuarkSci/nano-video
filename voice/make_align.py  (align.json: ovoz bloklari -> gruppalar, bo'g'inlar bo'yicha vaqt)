@@ -1,0 +1,14 @@
+import re, json
+G = json.load(open('voice/groups.json'))
+# Bloklar: (boshlanish_s, tugash_s, [gruppa indekslari]) — ASR/energiya bo'yicha aniqlangan nutq oraliqlari (clean.wav vaqti)
+B = [...]   # <-- har video uchun qo'lda to'ldiriladi (asr.py chiqishiga qarab)
+num = {'8':'sakkiz','20':'yigirma','15':'on besh','150':'bir yuz ellik','600':'olti yuz','4':'tort','700':'yetti yuz','170':'bir yuz yetmish'}   # raqamlarni so'z qilib bo'g'in sanash
+syl = lambda w: max(1, len(re.findall(r"[aeiou]", num.get(w, w).lower())))
+gs  = [sum(syl(w) for w, _ in ws) for _, _, ws in G]
+Dst = [off + ws[0][1] / 30 for cid, off, ws in G]      # off = bobning dizayn boshlanishi (s): 0,10,20,29,37,47 — loyihaga qarab!
+vst = [None] * len(G)
+for a, b, gl in B:
+    tot = sum(gs[g] for g in gl); c = 0
+    for g in gl: vst[g] = a + (b - a) * c / tot; c += gs[g]
+json.dump({'B': B, 'vst': vst, 'Dst': Dst}, open('voice/align.json', 'w'))
+# tezlik ko'rigi: (Dst[i+1]-Dst[i]) / (vst[i+1]-vst[i])  -> 0.55..1.45 oralig'ida bo'lsin

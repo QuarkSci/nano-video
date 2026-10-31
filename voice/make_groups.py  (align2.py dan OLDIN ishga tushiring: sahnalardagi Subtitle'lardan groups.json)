@@ -1,0 +1,9 @@
+import re, json
+chs = ['TestClip2', 'Ch2', 'Ch3', 'Ch4', 'Ch5', 'Ch6']
+G = []
+for cid in chs:
+    s = open(f'src/scenes/{cid}.tsx').read()
+    for m in re.finditer(r"<Subtitle[^>]*?words=\{\[(.*?)\]\}\s*/>", s, re.S):
+        ws = [(w[1:-1], int(b)) for w, b in re.findall(r"\{w: ('[^']*'|\"[^\"]*\"), s: (\d+)", m.group(1))]
+        G.append([cid, 0, ws])          # tartib = ovozdagi gap tartibi
+json.dump(G, open('voice/groups.json', 'w'), ensure_ascii=False)
