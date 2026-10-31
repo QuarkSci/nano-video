@@ -1,3 +1,4 @@
+# align2.py dan OLDIN ishga tushiring: sahnalardagi Subtitle'lardan groups.json
 import re, json
 chs = ['TestClip2', 'Ch2', 'Ch3', 'Ch4', 'Ch5', 'Ch6']
 G = []

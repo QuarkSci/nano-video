@@ -1,3 +1,4 @@
+# align.json: ovoz bloklari -> gruppalar, bo'g'inlar bo'yicha vaqt
 import re, json
 G = json.load(open('voice/groups.json'))
 # Bloklar: (boshlanish_s, tugash_s, [gruppa indekslari]) — ASR/energiya bo'yicha aniqlangan nutq oraliqlari (clean.wav vaqti)
